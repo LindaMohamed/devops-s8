@@ -25,7 +25,7 @@ jobs:
         run: mvn clean verify
         working-directory: backend/simple-api-student-main
 
-build-and-push-docker-image:
+  build-and-push-docker-image:
     needs: test-backend  
     runs-on: ubuntu-22.04
     steps:
