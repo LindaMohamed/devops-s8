@@ -1,0 +1,12 @@
+# Étape 1 : Build de l'application avec Maven
+FROM maven:3.9.9-amazoncorretto-21 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn package -DskipTests
+
+# Étape 2 : Exécution avec Amazon Corretto JRE
+FROM amazoncorretto:21
+WORKDIR /app
+COPY --from=build /app/target/*.jar /app/app.jar
+CMD ["java", "-jar", "/app/app.jar"]

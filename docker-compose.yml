@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  backend:
+    image: springboot-api 
+    ports:
+      - "8080:8080"
+    container_name: springboot-api
+    networks:
+      - app-network
+    depends_on:
+      - database
+
+  database:
+    image: postgres_image  
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: db
+    networks:
+      - app-network
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  httpd:
+    image: http-server
+    container_name: apache-server
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    external: true  
+
+volumes:
+  db-data:

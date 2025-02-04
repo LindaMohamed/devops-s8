@@ -1,0 +1,9 @@
+FROM eclipse-temurin:21-jdk-alpine AS builder
+WORKDIR /src
+COPY Main.java .
+RUN javac Main.java
+
+FROM eclipse-temurin:21-jre-alpine
+COPY --from=builder /src/Main.class /usr/src/Main.class
+WORKDIR /usr/src
+CMD ["java", "Main"]
