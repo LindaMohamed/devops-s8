@@ -17,5 +17,5 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
       - name: Build and test with Maven + SonarCloud
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=LindaMohamed_devops-s8 -Dsonar.organization=lindamohamed -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify sonar:sonar -Dsonar.projectKey=LindaMohamed_devops-s8 -Dsonar.organization=lindamohamed -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }}
         working-directory: backend/simple-api-student-main
