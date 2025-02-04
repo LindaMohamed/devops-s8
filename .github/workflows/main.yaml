@@ -22,11 +22,11 @@ jobs:
 
      #finally build your app with the latest command
       - name: Build and test with Maven
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=LindaMohamed_devops-s8 -Dsonar.organization=lindamohamed -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./backend/simple-api-students-main/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=LindaMohamed_devops-s8 -Dsonar.organization=lindamohamed -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }}  --file ./backend/simple-api-students-main/pom.xml
         working-directory: backend/simple-api-student-main
 
   build-and-push-docker-image:
-    needs: test-backend  
+    needs: test-backend   
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
