@@ -30,7 +30,7 @@ jobs:
         with:
           context: ./databases
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
-          push: true
+          push: true 
       
       - name: Build image and push frontend
         uses: docker/build-push-action@v3
