@@ -11,7 +11,7 @@ services:
     depends_on:
       - database
 
-  database:
+  database: 
     image: postgres_image  
     container_name: postgres_container
     environment:
