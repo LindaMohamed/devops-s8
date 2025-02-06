@@ -1,47 +1,32 @@
-name: Build and Push Docker Image
-
-on:
+name: Push docker and deploy 
+on: 
   workflow_run:
-    workflows: ["Test Backend"]  
+    workflows: ["build-push-all"]
     types:
       - completed
-    branches: main
-
+    branches:
+      - master
 jobs:
-  build-and-push-docker-image:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  run-ansible-playbook:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Login to DockerHub
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build image and push backend
-        uses: docker/build-push-action@v3
-        with:
-          context: ./backend/simple-api-student-main
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
-          push: true
-
-      - name: Build image and push database
-        uses: docker/build-push-action@v3
-        with:
-          context: ./databases
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
-          push: true 
+      - uses: actions/checkout@v4
       
-      - name: Build image and push frontend
-        uses: docker/build-push-action@v3
-        with:
-          context: ./frontend
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-frontend:latest
-          push: true
+      - uses: webfactory/ssh-agent@v0.9.0
+        with: 
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Build image and push httpd
-        uses: docker/build-push-action@v3
-        with:
-          context: ./httpd
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-httpd:latest
-          push: true
+      - name: Ajouter la clé SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ENV }}" > ../ansible/roles/database/.env
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Installer Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      - name: Exécuter le Playbook Ansible
+        run: |
+          ansible-playbook -i ansible/inventories/setup.yml ../ansible/playbook.yml
