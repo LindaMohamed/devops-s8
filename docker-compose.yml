@@ -31,7 +31,7 @@ services:
     networks:
       - app-network
     depends_on:
-      - backend
+      - backend 
 
   frontend:
     image: frontend-image
