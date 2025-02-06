@@ -26,7 +26,7 @@ services:
   httpd:
     image: http-server
     container_name: apache-server
-    ports:
+    ports: 
       - "80:80"
     networks:
       - app-network
