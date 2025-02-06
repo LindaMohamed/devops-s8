@@ -36,6 +36,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./devops-front
+          file: ./devops-front/dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-frontend:latest
           push: true
 
