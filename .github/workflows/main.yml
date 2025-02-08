@@ -29,4 +29,4 @@ jobs:
 
       - name: Exécuter le Playbook Ansible
         run: |
-          ansible-playbook -i ansible/inventories/setup.yml ../ansible/playbook.yml
+          ansible-playbook -i ../ansible/inventories/setup.yml ../ansible/playbook.yml
